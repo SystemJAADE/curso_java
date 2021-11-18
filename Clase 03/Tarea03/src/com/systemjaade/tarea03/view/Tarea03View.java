@@ -4,7 +4,6 @@ import com.systemjaade.tarea03.model.Postulante;
 import com.systemjaade.tarea03.service.PostulanteService;
 import com.systemjaade.tarea03.util.MetodoGenericos;
 import java.text.ParseException;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -335,7 +334,7 @@ public class Tarea03View extends javax.swing.JFrame {
       postulante.setSexo(true);
     }
     postulante.setDireccion(txtDireccion.getText());
-    postulante.setUbigeoId(1);
+    postulante.setUbigeoId("250102");
     postulanteService.modificar(postulante);
     //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
   }
