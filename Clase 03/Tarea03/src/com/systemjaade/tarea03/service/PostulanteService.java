@@ -30,7 +30,7 @@ public class PostulanteService {
       pstm.setString(2, postulante.getApellidoPaterno());
       pstm.setString(3, postulante.getApellidoMaterno());
       pstm.setString(4, postulante.getNumeroDni());
-      pstm.setDate(5, MetodoGenericos.DateJavaToDateSql(postulante.getFechaNacimiento()));
+      pstm.setDate(5, MetodoGenericos.dateJavaToDateSql(postulante.getFechaNacimiento()));
       pstm.setString(6, postulante.getTelefonoFijo());
       pstm.setString(7, postulante.getTelefonoCelular());
       pstm.setString(8, postulante.getCorreoElectronico());
@@ -74,7 +74,7 @@ public class PostulanteService {
       pstm.setString(2, postulante.getApellidoPaterno());
       pstm.setString(3, postulante.getApellidoMaterno());
       pstm.setString(4, postulante.getNumeroDni());
-      pstm.setDate(5, MetodoGenericos.DateJavaToDateSql(postulante.getFechaNacimiento()));
+      pstm.setDate(5, MetodoGenericos.dateJavaToDateSql(postulante.getFechaNacimiento()));
       pstm.setString(6, postulante.getTelefonoFijo());
       pstm.setString(7, postulante.getTelefonoCelular());
       pstm.setString(8, postulante.getCorreoElectronico());

@@ -2,6 +2,10 @@ package com.systemjaade.tarea03.view;
 
 import com.systemjaade.tarea03.model.Postulante;
 import com.systemjaade.tarea03.service.PostulanteService;
+import com.systemjaade.tarea03.util.MetodoGenericos;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -177,7 +181,11 @@ public class Tarea03View extends javax.swing.JFrame {
   }// </editor-fold>//GEN-END:initComponents
 
   private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-    agregar();
+    try {
+      agregar();
+    } catch (ParseException ex) {
+      Logger.getLogger(Tarea03View.class.getName()).log(Level.SEVERE, null, ex);
+    }
   }//GEN-LAST:event_btnAgregarActionPerformed
 
   /**
@@ -247,13 +255,14 @@ public class Tarea03View extends javax.swing.JFrame {
   private javax.swing.JTextField txtTelefonoFijo;
   // End of variables declaration//GEN-END:variables
 
-  private void agregar() {
+  private void agregar() throws ParseException {
     Postulante postulante = new Postulante();
     postulante.setNombres(txtNombre.getText());
     postulante.setApellidoPaterno(txtApellidoPaterno.getText());
     postulante.setApellidoMaterno(txtApellidoMaterno.getText());
     postulante.setNumeroDni(txtNumeroDni.getText());
-    postulante.setFechaNacimiento(txtFechaNacimiento.getText());
+//    fecha  - dd/mm/yyyyy
+    postulante.setFechaNacimiento(MetodoGenericos.stringToDate(txtFechaNacimiento.getText()));
     postulante.setTelefonoFijo(txtTelefonoFijo.getText());
     postulante.setTelefonoCelular(txtTelefonoCelular.getText());
     postulante.setCorreoElectronico(txtCorreoElectronico.getText());
