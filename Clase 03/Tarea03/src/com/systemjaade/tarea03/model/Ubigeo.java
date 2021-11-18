@@ -2,20 +2,31 @@ package com.systemjaade.tarea03.model;
 
 public class Ubigeo {
 
-  private int ubigeoId;
+  private String ubigeoId;
+  private String departamentoId;
   private String departamento;
+  private String provinciaId;
   private String provincia;
+  private String distritoId;
   private String distrito;
 
   public Ubigeo() {
   }
 
-  public int getUbigeoId() {
+  public String getUbigeoId() {
     return ubigeoId;
   }
 
-  public void setUbigeoId(int ubigeoId) {
+  public void setUbigeoId(String ubigeoId) {
     this.ubigeoId = ubigeoId;
+  }
+
+  public String getDepartamentoId() {
+    return departamentoId;
+  }
+
+  public void setDepartamentoId(String departamentoId) {
+    this.departamentoId = departamentoId;
   }
 
   public String getDepartamento() {
@@ -26,12 +37,28 @@ public class Ubigeo {
     this.departamento = departamento;
   }
 
+  public String getProvinciaId() {
+    return provinciaId;
+  }
+
+  public void setProvinciaId(String provinciaId) {
+    this.provinciaId = provinciaId;
+  }
+
   public String getProvincia() {
     return provincia;
   }
 
   public void setProvincia(String provincia) {
     this.provincia = provincia;
+  }
+
+  public String getDistritoId() {
+    return distritoId;
+  }
+
+  public void setDistritoId(String distritoId) {
+    this.distritoId = distritoId;
   }
 
   public String getDistrito() {
