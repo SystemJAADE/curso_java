@@ -1,9 +1,12 @@
 package com.systemjaade.tarea03.view;
 
 import com.systemjaade.tarea03.model.Postulante;
+import com.systemjaade.tarea03.model.Ubigeo;
 import com.systemjaade.tarea03.service.PostulanteService;
+import com.systemjaade.tarea03.service.UbigeoService;
 import com.systemjaade.tarea03.util.MetodoGenericos;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,12 +17,19 @@ import javax.swing.table.DefaultTableModel;
  * @author elitg
  */
 public class Tarea03View extends javax.swing.JFrame {
-    
-  PostulanteService postulanteService = new PostulanteService();
-  
+
+  private PostulanteService postulanteService = new PostulanteService();
+  private UbigeoService ubigeoService = new UbigeoService();
+  private Ubigeo ubigeo = new Ubigeo();
   Postulante postulante = new Postulante();
+  List<Ubigeo> departamentos = new ArrayList<>();
+  List<Ubigeo> provincias = new ArrayList<>();
+  List<Ubigeo> distritos = new ArrayList<>();
+  DefaultTableModel tabla = new DefaultTableModel();
+
   public Tarea03View() {
     initComponents();
+    llenarDepartamento();
   }
 
   @SuppressWarnings("unchecked")
@@ -128,12 +138,27 @@ public class Tarea03View extends javax.swing.JFrame {
     jPanel10.add(txtDireccion);
 
     cbxDepartamento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Departamento" }));
+    cbxDepartamento.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        cbxDepartamentoActionPerformed(evt);
+      }
+    });
     jPanel10.add(cbxDepartamento);
 
     cbxProvincia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Provincia" }));
+    cbxProvincia.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        cbxProvinciaActionPerformed(evt);
+      }
+    });
     jPanel10.add(cbxProvincia);
 
     cbxDistrito.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Distrito" }));
+    cbxDistrito.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        cbxDistritoActionPerformed(evt);
+      }
+    });
     jPanel10.add(cbxDistrito);
 
     jPanel1.add(jPanel10);
@@ -221,16 +246,28 @@ public class Tarea03View extends javax.swing.JFrame {
 
   private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
 
-      try {
-          modificar();
-      } catch (ParseException ex) {
-          Logger.getLogger(Tarea03View.class.getName()).log(Level.SEVERE, null, ex);
-      }
+    try {
+      modificar();
+    } catch (ParseException ex) {
+      Logger.getLogger(Tarea03View.class.getName()).log(Level.SEVERE, null, ex);
+    }
   }//GEN-LAST:event_btnModificarActionPerformed
 
   private void tblListarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblListarMouseClicked
     eventoClick();
   }//GEN-LAST:event_tblListarMouseClicked
+
+  private void cbxDepartamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxDepartamentoActionPerformed
+    llenarProvincia();
+  }//GEN-LAST:event_cbxDepartamentoActionPerformed
+
+  private void cbxProvinciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxProvinciaActionPerformed
+    llenarDistrito();
+  }//GEN-LAST:event_cbxProvinciaActionPerformed
+
+  private void cbxDistritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxDistritoActionPerformed
+    setUbigeo();
+  }//GEN-LAST:event_cbxDistritoActionPerformed
 
   /**
    * @param args the command line arguments
@@ -300,7 +337,7 @@ public class Tarea03View extends javax.swing.JFrame {
   // End of variables declaration//GEN-END:variables
 
   private void agregar() throws ParseException {
-    Postulante postulante = new Postulante();
+    postulante = new Postulante();
     postulante.setNombres(txtNombre.getText());
     postulante.setApellidoPaterno(txtApellidoPaterno.getText());
     postulante.setApellidoMaterno(txtApellidoMaterno.getText());
@@ -314,36 +351,31 @@ public class Tarea03View extends javax.swing.JFrame {
       postulante.setSexo(true);
     }
     postulante.setDireccion(txtDireccion.getText());
-    postulante.setUbigeoId("250401");
+    postulante.setUbigeoId(ubigeo.getUbigeoId());
     postulanteService.registrar(postulante);
   }
 
   private void modificar() throws ParseException {
-      postulante.setNombres(txtNombre.getText());
+    postulante.setNombres(txtNombre.getText());
     postulante.setApellidoPaterno(txtApellidoPaterno.getText());
     postulante.setApellidoMaterno(txtApellidoMaterno.getText());
     postulante.setNumeroDni(txtNumeroDni.getText());
-//    fecha  - dd/mm/yyyyy
     postulante.setFechaNacimiento(MetodoGenericos.stringToDate(txtFechaNacimiento.getText()));
     postulante.setTelefonoFijo(txtTelefonoFijo.getText());
     postulante.setTelefonoCelular(txtTelefonoCelular.getText());
     postulante.setCorreoElectronico(txtCorreoElectronico.getText());
-    //    logica sexo
     postulante.setSexo(false);
     if (rbtMasculino.isSelected()) {
       postulante.setSexo(true);
     }
     postulante.setDireccion(txtDireccion.getText());
-    postulante.setUbigeoId("250102");
+    postulante.setUbigeoId(ubigeo.getUbigeoId());
     postulanteService.modificar(postulante);
-    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
   }
 
   private void eliminar() {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-  }
 
-  DefaultTableModel tabla = new DefaultTableModel();
+  }
 
   private void listar() {
     String[] columnNames = {
@@ -361,30 +393,30 @@ public class Tarea03View extends javax.swing.JFrame {
       "ubigeo_id"};
     tabla = new DefaultTableModel(null, columnNames);
     List<Postulante> lista = postulanteService.getLista();
-    for (Postulante postulante : lista) {
+    for (Postulante bean : lista) {
       Object[] object = new Object[12];
-      object[0] = postulante.getPostulanteId();
-      object[1] = postulante.getNombres();
-      object[2] = postulante.getApellidoPaterno();
-      object[3] = postulante.getApellidoMaterno();
-      object[4] = postulante.getNumeroDni();
-      object[5] = postulante.getFechaNacimiento();
-      object[6] = postulante.getTelefonoFijo();
-      object[7] = postulante.getTelefonoCelular();
-      object[8] = postulante.getCorreoElectronico();
-      object[9] = postulante.isSexo();
-      object[10] = postulante.getDireccion();
-      object[11] = postulante.getUbigeoId();
+      object[0] = bean.getPostulanteId();
+      object[1] = bean.getNombres();
+      object[2] = bean.getApellidoPaterno();
+      object[3] = bean.getApellidoMaterno();
+      object[4] = bean.getNumeroDni();
+      object[5] = bean.getFechaNacimiento();
+      object[6] = bean.getTelefonoFijo();
+      object[7] = bean.getTelefonoCelular();
+      object[8] = bean.getCorreoElectronico();
+      object[9] = bean.isSexo();
+      object[10] = bean.getDireccion();
+      object[11] = bean.getUbigeoId();
       tabla.addRow(object);
     }
     tblListar.setModel(tabla);
   }
-  
+
   private void eventoClick() {
     int fila = tblListar.getSelectedRow();
     try {
       int id = Integer.parseInt(tblListar.getValueAt(fila, 0).toString());
-       postulante = postulanteService.getPostulante(id);
+      postulante = postulanteService.getPostulante(id);
       txtNombre.setText(postulante.getNombres());
       txtApellidoPaterno.setText(postulante.getApellidoPaterno());
       txtApellidoMaterno.setText(postulante.getApellidoMaterno());
@@ -393,16 +425,54 @@ public class Tarea03View extends javax.swing.JFrame {
       txtTelefonoFijo.setText(postulante.getTelefonoFijo());
       txtTelefonoCelular.setText(postulante.getTelefonoCelular());
       txtCorreoElectronico.setText(postulante.getCorreoElectronico());
-      if(postulante.isSexo()==true){
-          rbtMasculino.setSelected(true);
-      }else{
-          rbtFemenino.setSelected(true);
+      if (postulante.isSexo() == true) {
+        rbtMasculino.setSelected(true);
+      } else {
+        rbtFemenino.setSelected(true);
       }
       txtDireccion.setText(postulante.getDireccion());
-      
 
     } catch (Exception e) {
       System.out.println("Error: " + e.getMessage());
     }
   }
+
+  private void llenarDepartamento() {
+    cbxDepartamento.removeAllItems();
+    departamentos = ubigeoService.getDepartamento();
+    departamentos.forEach((d) -> cbxDepartamento.addItem(d.getDepartamento()));
+    llenarProvincia();
+  }
+
+  private void llenarProvincia() {
+    cbxProvincia.removeAllItems();
+    departamentos.forEach(d -> {
+      if (d.getDepartamento().equals(cbxDepartamento.getSelectedItem())) {
+        ubigeo = d;
+      }
+    });
+    provincias = ubigeoService.getProvincia(ubigeo.getDepartamentoId());
+    provincias.forEach((p) -> cbxProvincia.addItem(p.getProvincia()));
+    llenarDistrito();
+  }
+
+  private void llenarDistrito() {
+    cbxDistrito.removeAllItems();
+    provincias.forEach(p -> {
+      if (p.getProvincia().equals(cbxProvincia.getSelectedItem())) {
+        ubigeo = p;
+      }
+    });
+    distritos = ubigeoService.getDistrito(ubigeo.getDepartamentoId(), ubigeo.getProvinciaId());
+    distritos.forEach((d) -> cbxDistrito.addItem(d.getDistrito()));
+  }
+
+  private void setUbigeo() {
+    distritos.forEach(d -> {
+      if (d.getDistrito().equals(cbxDistrito.getSelectedItem())) {
+        ubigeo = d;
+      }
+    });
+  }
+
 }

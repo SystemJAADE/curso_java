@@ -15,26 +15,17 @@ import java.util.List;
  */
 public class UbigeoService {
 
-  public Ubigeo getUbigeo(int ubigeoId) {
-    Ubigeo bean = new Ubigeo();
+  public List<Ubigeo> getDepartamento() {
+    List<Ubigeo> lista = new ArrayList<>();
     Connection cn = null;
     try {
       cn = Conexion.getConnection();
-      String sql = "SELECT "
-        + "ubigeo_id, "
-        + "departamento_id, "
-        + "departamento, "
-        + "provincia_id, "
-        + "provincia, "
-        + "distrito_id, "
-        + "distrito, "
-        + "FROM ubigeo "
-        + "WHERE ubigeo_id = ?";
+      String sql = "SELECT * FROM ubigeo "
+        + "GROUP BY departamento_id ;";
       PreparedStatement pstm = cn.prepareStatement(sql);
-      pstm.setInt(1, ubigeoId);
       ResultSet rs = pstm.executeQuery();
-      if (rs.next()) {
-        bean = mapRow(rs);
+      while (rs.next()) {
+        lista.add(mapRow(rs));
       }
       rs.close();
       pstm.close();
@@ -48,30 +39,26 @@ public class UbigeoService {
       } catch (Exception e) {
       }
     }
-    return bean;
+    return lista;
   }
 
-  public List<Ubigeo> getLista() {
+  public List<Ubigeo> getProvincia(String departamentoId) {
     List<Ubigeo> lista = new ArrayList<>();
     Connection cn = null;
     try {
       cn = Conexion.getConnection();
-      String sql = "SELECT "
-        + "ubigeo_id, "
-        + "departamento_id, "
-        + "departamento, "
-        + "provincia_id, "
-        + "provincia, "
-        + "distrito_id, "
-        + "distrito, "
-        + "FROM ubigeo ";
+      String sql = "SELECT * FROM ubigeo "
+        + "WHERE provincia_id != '' "
+        + "AND departamento_id = ? "
+        + "GROUP BY departamento_id, provincia_id;";
       PreparedStatement pstm = cn.prepareStatement(sql);
+      pstm.setString(1, departamentoId);
       ResultSet rs = pstm.executeQuery();
       while (rs.next()) {
-        Ubigeo a = mapRow(rs);
-        lista.add(a);
+        lista.add(mapRow(rs));
       }
-      return lista;
+      rs.close();
+      pstm.close();
     } catch (SQLException e) {
       throw new RuntimeException(e.getMessage());
     } catch (Exception e) {
@@ -82,16 +69,48 @@ public class UbigeoService {
       } catch (Exception e) {
       }
     }
+    return lista;
+  }
+
+  public List<Ubigeo> getDistrito(String departamentoId, String provinciaId) {
+    List<Ubigeo> lista = new ArrayList<>();
+    Connection cn = null;
+    try {
+      cn = Conexion.getConnection();
+      String sql = "SELECT * FROM ubigeo "
+        + "WHERE departamento_id = ? "
+        + "AND provincia_id = ? "
+        + "AND distrito_id != '';";
+      PreparedStatement pstm = cn.prepareStatement(sql);
+      pstm.setString(1, departamentoId);
+      pstm.setString(2, provinciaId);
+      ResultSet rs = pstm.executeQuery();
+      while (rs.next()) {
+        lista.add(mapRow(rs));
+      }
+      rs.close();
+      pstm.close();
+    } catch (SQLException e) {
+      throw new RuntimeException(e.getMessage());
+    } catch (Exception e) {
+      throw new RuntimeException("No se tiene acceso a la BD.");
+    } finally {
+      try {
+        cn.close();
+      } catch (Exception e) {
+      }
+    }
+    return lista;
   }
 
   public Ubigeo mapRow(ResultSet rs) throws SQLException {
     Ubigeo bean = new Ubigeo();
     bean.setUbigeoId(rs.getString("ubigeo_id"));
-    bean.setDepartamentoId(rs.getString("departamento"));
+    bean.setDepartamentoId(rs.getString("departamento_id"));
     bean.setDepartamento(rs.getString("departamento"));
+    bean.setProvinciaId(rs.getString("provincia_id"));
     bean.setProvincia(rs.getString("provincia"));
-    bean.setProvincia(rs.getString("provincia"));
-    bean.setDistrito(rs.getString("distrito"));
+    bean.setDistritoId(rs.getString("distrito_id"));
     bean.setDistrito(rs.getString("distrito"));
     return bean;
   }

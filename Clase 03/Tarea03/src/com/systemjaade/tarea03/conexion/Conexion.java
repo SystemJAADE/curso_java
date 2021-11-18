@@ -9,15 +9,12 @@ public class Conexion {
   private static Connection cn;
 
   public static Connection getConnection() throws Exception {
-    String url = "";
-    String driver = "";
+    String driver = "com.mysql.cj.jdbc.Driver";
+    String url = "jdbc:mysql://localhost:3306/tarea03?serverTimezone=America/Lima";
     try {
-      driver = "com.mysql.cj.jdbc.Driver";
-      url = "jdbc:mysql://localhost:3306/tarea03?serverTimezone=America/Lima";
-      Class.forName(driver).newInstance();
+      Class.forName(driver);
       cn = DriverManager.getConnection(url, "root", "root");
-      System.out.println("llego a hacer la conexion");
-    } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException e) {
+    } catch (ClassNotFoundException | SQLException e) {
       System.err.println("No hay Conexion: " + e.getMessage());
     }
     return cn;

@@ -69,4 +69,9 @@ public class Ubigeo {
     this.distrito = distrito;
   }
 
+  @Override
+  public String toString() {
+    return "Ubigeo{" + "ubigeoId=" + ubigeoId + ", departamentoId=" + departamentoId + ", departamento=" + departamento + ", provinciaId=" + provinciaId + ", provincia=" + provincia + ", distritoId=" + distritoId + ", distrito=" + distrito + '}';
+  }
+
 }
