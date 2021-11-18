@@ -7,15 +7,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Tarazona Marrujo Elí Gamaliel - "System JAADE S.A.C."
  * @version 30/12/2019 02:16 AM UTC -5
  */
 public class PostulanteService {
-
-  public LinkedList<Postulante> lista = new LinkedList<>();
 
   public void registrar(Postulante postulante) {
     Connection cn = null;
@@ -118,7 +117,8 @@ public class PostulanteService {
     }
   }
 
-  public LinkedList<Postulante> getLista() {
+  public Postulante getPostulante(int postulanteId) {
+    Postulante bean = new Postulante();
     Connection cn = null;
     try {
       cn = Conexion.getConnection();
@@ -135,7 +135,48 @@ public class PostulanteService {
         + "sexo, "
         + "direccion, "
         + "ubigeo_id "
-        + "FROM ocupacion";
+        + "FROM postulante "
+        + "WHERE postulante_id = ?";
+      PreparedStatement pstm = cn.prepareStatement(sql);
+      pstm.setInt(1, postulanteId);
+      ResultSet rs = pstm.executeQuery();
+      if (rs.next()) {
+        bean = mapRow(rs);
+      }
+      rs.close();
+      pstm.close();
+    } catch (SQLException e) {
+      throw new RuntimeException(e.getMessage());
+    } catch (Exception e) {
+      throw new RuntimeException("No se tiene acceso a la BD.");
+    } finally {
+      try {
+        cn.close();
+      } catch (Exception e) {
+      }
+    }
+    return bean;
+  }
+
+  public List<Postulante> getLista() {
+    List<Postulante> lista = new ArrayList<>();
+    Connection cn = null;
+    try {
+      cn = Conexion.getConnection();
+      String sql = "SELECT "
+        + "postulante_id, "
+        + "nombres, "
+        + "apellido_paterno, "
+        + "apellido_materno, "
+        + "numero_dni, "
+        + "fecha_nacimiento, "
+        + "telefono_fijo, "
+        + "telefono_celular, "
+        + "correo_electronico, "
+        + "sexo, "
+        + "direccion, "
+        + "ubigeo_id "
+        + "FROM postulante";
       PreparedStatement pstm = cn.prepareStatement(sql);
       ResultSet rs = pstm.executeQuery();
       while (rs.next()) {
@@ -162,7 +203,7 @@ public class PostulanteService {
     bean.setApellidoPaterno(rs.getString("apellido_paterno"));
     bean.setApellidoMaterno(rs.getString("apellido_materno"));
     bean.setNumeroDni(rs.getString("numero_dni"));
-    bean.setFechaNacimiento(rs.getDate("decha_nacimiento"));
+    bean.setFechaNacimiento(rs.getDate("fecha_nacimiento"));
     bean.setTelefonoFijo(rs.getString("telefono_fijo"));
     bean.setTelefonoCelular(rs.getString("telefono_celular"));
     bean.setCorreoElectronico(rs.getString("correo_electronico"));

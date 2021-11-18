@@ -4,8 +4,10 @@ import com.systemjaade.tarea03.model.Postulante;
 import com.systemjaade.tarea03.service.PostulanteService;
 import com.systemjaade.tarea03.util.MetodoGenericos;
 import java.text.ParseException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -51,7 +53,7 @@ public class Tarea03View extends javax.swing.JFrame {
     btnListar = new javax.swing.JButton();
     jPanel2 = new javax.swing.JPanel();
     jScrollPane1 = new javax.swing.JScrollPane();
-    jTable1 = new javax.swing.JTable();
+    tblListar = new javax.swing.JTable();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     setTitle("Postulantes");
@@ -146,12 +148,27 @@ public class Tarea03View extends javax.swing.JFrame {
     jPanel5.add(btnAgregar);
 
     btnModificar.setText("Modificar");
+    btnModificar.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnModificarActionPerformed(evt);
+      }
+    });
     jPanel5.add(btnModificar);
 
     btnEliminar.setText("Eliminar");
+    btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnEliminarActionPerformed(evt);
+      }
+    });
     jPanel5.add(btnEliminar);
 
     btnListar.setText("Listar");
+    btnListar.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnListarActionPerformed(evt);
+      }
+    });
     jPanel5.add(btnListar);
 
     jPanel1.add(jPanel5);
@@ -160,7 +177,7 @@ public class Tarea03View extends javax.swing.JFrame {
 
     jPanel2.setLayout(new java.awt.BorderLayout());
 
-    jTable1.setModel(new javax.swing.table.DefaultTableModel(
+    tblListar.setModel(new javax.swing.table.DefaultTableModel(
       new Object [][] {
         {null, null, null, null},
         {null, null, null, null},
@@ -171,7 +188,12 @@ public class Tarea03View extends javax.swing.JFrame {
         "Title 1", "Title 2", "Title 3", "Title 4"
       }
     ));
-    jScrollPane1.setViewportView(jTable1);
+    tblListar.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        tblListarMouseClicked(evt);
+      }
+    });
+    jScrollPane1.setViewportView(tblListar);
 
     jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -187,6 +209,22 @@ public class Tarea03View extends javax.swing.JFrame {
       Logger.getLogger(Tarea03View.class.getName()).log(Level.SEVERE, null, ex);
     }
   }//GEN-LAST:event_btnAgregarActionPerformed
+
+  private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
+    listar();
+  }//GEN-LAST:event_btnListarActionPerformed
+
+  private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+    eliminar();
+  }//GEN-LAST:event_btnEliminarActionPerformed
+
+  private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+    modificar();
+  }//GEN-LAST:event_btnModificarActionPerformed
+
+  private void tblListarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblListarMouseClicked
+    eventoClick();
+  }//GEN-LAST:event_tblListarMouseClicked
 
   /**
    * @param args the command line arguments
@@ -241,9 +279,9 @@ public class Tarea03View extends javax.swing.JFrame {
   private javax.swing.JPanel jPanel8;
   private javax.swing.JPanel jPanel9;
   private javax.swing.JScrollPane jScrollPane1;
-  private javax.swing.JTable jTable1;
   private javax.swing.JRadioButton rbtFemenino;
   private javax.swing.JRadioButton rbtMasculino;
+  private javax.swing.JTable tblListar;
   private javax.swing.JTextField txtApellidoMaterno;
   private javax.swing.JTextField txtApellidoPaterno;
   private javax.swing.JTextField txtCorreoElectronico;
@@ -274,5 +312,72 @@ public class Tarea03View extends javax.swing.JFrame {
     postulante.setDireccion(txtDireccion.getText());
     postulante.setUbigeoId(1);
     postulanteService.registrar(postulante);
+  }
+
+  private void modificar() {
+    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  }
+
+  private void eliminar() {
+    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  }
+
+  DefaultTableModel tabla = new DefaultTableModel();
+
+  private void listar() {
+    String[] columnNames = {
+      "postulante_id",
+      "nombres",
+      "apellido_paterno",
+      "apellido_materno",
+      "numero_dni",
+      "fecha_nacimiento",
+      "telefono_fijo",
+      "telefono_celular",
+      "correo_electronico",
+      "sexo",
+      "direccion",
+      "ubigeo_id"};
+    tabla = new DefaultTableModel(null, columnNames);
+    List<Postulante> lista = postulanteService.getLista();
+    for (Postulante postulante : lista) {
+      Object[] object = new Object[12];
+      object[0] = postulante.getPostulanteId();
+      object[1] = postulante.getNombres();
+      object[2] = postulante.getApellidoPaterno();
+      object[3] = postulante.getApellidoMaterno();
+      object[4] = postulante.getNumeroDni();
+      object[5] = postulante.getFechaNacimiento();
+      object[6] = postulante.getTelefonoFijo();
+      object[7] = postulante.getTelefonoCelular();
+      object[8] = postulante.getCorreoElectronico();
+      object[9] = postulante.isSexo();
+      object[10] = postulante.getDireccion();
+      object[11] = postulante.getUbigeoId();
+      tabla.addRow(object);
+    }
+    tblListar.setModel(tabla);
+  }
+
+  private void eventoClick() {
+    int fila = tblListar.getSelectedRow();
+    try {
+      int id = Integer.parseInt(tblListar.getValueAt(fila, 0).toString());
+      Postulante postulante = postulanteService.getPostulante(id);
+//      setText(postulante.getPostulanteId() + "");
+      txtNombre.setText(postulante.getNombres());
+//      cbxUsuarios.setSelected(beanCargo.isUsuarios());
+//      cbxPacientes.setSelected(beanCargo.isPacientes());
+//      cbxAtenciones.setSelected(beanCargo.isAtencion());
+//      cbxReportes.setSelected(beanCargo.isReportes());
+//      cbxAdmin.setSelected(beanCargo.isAdmin());
+//      cbxCajas.setSelected(beanCargo.isCajas());
+//      cbxCaja.setSelected(beanCargo.isCaja());
+//      cbxFarmacia.setSelected(beanCargo.isFarmacia());
+//      cbxProductos.setSelected(beanCargo.isProductos());
+//      cbxServicios.setSelected(beanCargo.isServicios());
+    } catch (Exception e) {
+      System.out.println("Error: " + e.getMessage());
+    }
   }
 }

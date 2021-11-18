@@ -131,4 +131,9 @@ public class Postulante {
     this.ubigeoId = ubigeoId;
   }
 
+  @Override
+  public String toString() {
+    return "Postulante{" + "postulanteId=" + postulanteId + ", nombres=" + nombres + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", numeroDni=" + numeroDni + ", fechaNacimiento=" + fechaNacimiento + ", telefonoFijo=" + telefonoFijo + ", telefonoCelular=" + telefonoCelular + ", correoElectronico=" + correoElectronico + ", sexo=" + sexo + ", direccion=" + direccion + ", ubigeoId=" + ubigeoId + '}';
+  }
+
 }
