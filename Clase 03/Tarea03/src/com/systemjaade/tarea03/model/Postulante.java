@@ -15,12 +15,12 @@ public class Postulante {
   private String correoElectronico;
   private Boolean sexo;
   private String direccion;
-  private int ubigeoId;
+  private String ubigeoId;
 
   public Postulante() {
   }
 
-  public Postulante(int postulanteId, String nombres, String apellidoPaterno, String apellidoMaterno, String numeroDni, Date fechaNacimiento, String telefonoFijo, String telefonoCelular, String correoElectronico, Boolean sexo, String direccion, int ubigeoId) {
+  public Postulante(int postulanteId, String nombres, String apellidoPaterno, String apellidoMaterno, String numeroDni, Date fechaNacimiento, String telefonoFijo, String telefonoCelular, String correoElectronico, Boolean sexo, String direccion, String ubigeoId) {
     this.postulanteId = postulanteId;
     this.nombres = nombres;
     this.apellidoPaterno = apellidoPaterno;
@@ -123,11 +123,11 @@ public class Postulante {
     this.direccion = direccion;
   }
 
-  public int getUbigeoId() {
+  public String getUbigeoId() {
     return ubigeoId;
   }
 
-  public void setUbigeoId(int ubigeoId) {
+  public void setUbigeoId(String ubigeoId) {
     this.ubigeoId = ubigeoId;
   }
 

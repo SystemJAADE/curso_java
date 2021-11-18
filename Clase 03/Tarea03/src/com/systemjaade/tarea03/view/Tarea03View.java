@@ -299,18 +299,16 @@ public class Tarea03View extends javax.swing.JFrame {
     postulante.setApellidoPaterno(txtApellidoPaterno.getText());
     postulante.setApellidoMaterno(txtApellidoMaterno.getText());
     postulante.setNumeroDni(txtNumeroDni.getText());
-//    fecha  - dd/mm/yyyyy
     postulante.setFechaNacimiento(MetodoGenericos.stringToDate(txtFechaNacimiento.getText()));
     postulante.setTelefonoFijo(txtTelefonoFijo.getText());
     postulante.setTelefonoCelular(txtTelefonoCelular.getText());
     postulante.setCorreoElectronico(txtCorreoElectronico.getText());
-    //    logica sexo
     postulante.setSexo(false);
     if (rbtMasculino.isSelected()) {
       postulante.setSexo(true);
     }
     postulante.setDireccion(txtDireccion.getText());
-    postulante.setUbigeoId(1);
+    postulante.setUbigeoId("250401");
     postulanteService.registrar(postulante);
   }
 
@@ -358,12 +356,13 @@ public class Tarea03View extends javax.swing.JFrame {
     }
     tblListar.setModel(tabla);
   }
+  Postulante postulante = new Postulante();
 
   private void eventoClick() {
     int fila = tblListar.getSelectedRow();
     try {
       int id = Integer.parseInt(tblListar.getValueAt(fila, 0).toString());
-      Postulante postulante = postulanteService.getPostulante(id);
+      postulante = postulanteService.getPostulante(id);
 //      setText(postulante.getPostulanteId() + "");
       txtNombre.setText(postulante.getNombres());
 //      cbxUsuarios.setSelected(beanCargo.isUsuarios());

@@ -35,7 +35,7 @@ public class PostulanteService {
       pstm.setString(8, postulante.getCorreoElectronico());
       pstm.setBoolean(9, postulante.isSexo());
       pstm.setString(10, postulante.getDireccion());
-      pstm.setInt(11, postulante.getUbigeoId());
+      pstm.setString(11, postulante.getUbigeoId());
       pstm.executeUpdate();
       pstm.close();
     } catch (SQLException e) {
@@ -79,7 +79,7 @@ public class PostulanteService {
       pstm.setString(8, postulante.getCorreoElectronico());
       pstm.setBoolean(9, postulante.isSexo());
       pstm.setString(10, postulante.getDireccion());
-      pstm.setInt(11, postulante.getUbigeoId());
+      pstm.setString(11, postulante.getUbigeoId());
       pstm.setInt(12, postulante.getPostulanteId());
       pstm.executeUpdate();
       pstm.close();
@@ -209,7 +209,7 @@ public class PostulanteService {
     bean.setCorreoElectronico(rs.getString("correo_electronico"));
     bean.setSexo(rs.getBoolean("sexo"));
     bean.setDireccion(rs.getString("direccion"));
-    bean.setUbigeoId(rs.getInt("ubigeo_id"));
+    bean.setUbigeoId(rs.getString("ubigeo_id"));
     return bean;
   }
 }
