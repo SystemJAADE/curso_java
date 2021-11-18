@@ -55,7 +55,7 @@ public class PostulanteService {
     try {
       cn = Conexion.getConnection();
       cn.setAutoCommit(true);
-      String sql = "UPDATE postulante"
+      String sql = "UPDATE tarea03.postulante"
         + "SET nombres=?, "
         + "apellido_paterno=?, "
         + "apellido_materno=?, "

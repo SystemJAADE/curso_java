@@ -4,6 +4,7 @@ import com.systemjaade.tarea03.model.Postulante;
 import com.systemjaade.tarea03.service.PostulanteService;
 import com.systemjaade.tarea03.util.MetodoGenericos;
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,9 +15,10 @@ import javax.swing.table.DefaultTableModel;
  * @author elitg
  */
 public class Tarea03View extends javax.swing.JFrame {
-
+    
   PostulanteService postulanteService = new PostulanteService();
-
+  
+  Postulante postulante = new Postulante();
   public Tarea03View() {
     initComponents();
   }
@@ -219,7 +221,12 @@ public class Tarea03View extends javax.swing.JFrame {
   }//GEN-LAST:event_btnEliminarActionPerformed
 
   private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-    modificar();
+
+      try {
+          modificar();
+      } catch (ParseException ex) {
+          Logger.getLogger(Tarea03View.class.getName()).log(Level.SEVERE, null, ex);
+      }
   }//GEN-LAST:event_btnModificarActionPerformed
 
   private void tblListarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblListarMouseClicked
@@ -314,8 +321,25 @@ public class Tarea03View extends javax.swing.JFrame {
     postulanteService.registrar(postulante);
   }
 
-  private void modificar() {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  private void modificar() throws ParseException {
+      postulante.setNombres(txtNombre.getText());
+    postulante.setApellidoPaterno(txtApellidoPaterno.getText());
+    postulante.setApellidoMaterno(txtApellidoMaterno.getText());
+    postulante.setNumeroDni(txtNumeroDni.getText());
+//    fecha  - dd/mm/yyyyy
+    postulante.setFechaNacimiento(MetodoGenericos.stringToDate(txtFechaNacimiento.getText()));
+    postulante.setTelefonoFijo(txtTelefonoFijo.getText());
+    postulante.setTelefonoCelular(txtTelefonoCelular.getText());
+    postulante.setCorreoElectronico(txtCorreoElectronico.getText());
+    //    logica sexo
+    postulante.setSexo(false);
+    if (rbtMasculino.isSelected()) {
+      postulante.setSexo(true);
+    }
+    postulante.setDireccion(txtDireccion.getText());
+    postulante.setUbigeoId(1);
+    postulanteService.modificar(postulante);
+    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
   }
 
   private void eliminar() {
@@ -358,24 +382,28 @@ public class Tarea03View extends javax.swing.JFrame {
     }
     tblListar.setModel(tabla);
   }
-
+  
   private void eventoClick() {
     int fila = tblListar.getSelectedRow();
     try {
       int id = Integer.parseInt(tblListar.getValueAt(fila, 0).toString());
-      Postulante postulante = postulanteService.getPostulante(id);
-//      setText(postulante.getPostulanteId() + "");
+       postulante = postulanteService.getPostulante(id);
       txtNombre.setText(postulante.getNombres());
-//      cbxUsuarios.setSelected(beanCargo.isUsuarios());
-//      cbxPacientes.setSelected(beanCargo.isPacientes());
-//      cbxAtenciones.setSelected(beanCargo.isAtencion());
-//      cbxReportes.setSelected(beanCargo.isReportes());
-//      cbxAdmin.setSelected(beanCargo.isAdmin());
-//      cbxCajas.setSelected(beanCargo.isCajas());
-//      cbxCaja.setSelected(beanCargo.isCaja());
-//      cbxFarmacia.setSelected(beanCargo.isFarmacia());
-//      cbxProductos.setSelected(beanCargo.isProductos());
-//      cbxServicios.setSelected(beanCargo.isServicios());
+      txtApellidoPaterno.setText(postulante.getApellidoPaterno());
+      txtApellidoMaterno.setText(postulante.getApellidoMaterno());
+      txtNumeroDni.setText(postulante.getNumeroDni());
+      txtFechaNacimiento.setText(MetodoGenericos.aNormal(postulante.getFechaNacimiento().toString()));
+      txtTelefonoFijo.setText(postulante.getTelefonoFijo());
+      txtTelefonoCelular.setText(postulante.getTelefonoCelular());
+      txtCorreoElectronico.setText(postulante.getCorreoElectronico());
+      if(postulante.isSexo()==true){
+          rbtMasculino.setSelected(true);
+      }else{
+          rbtFemenino.setSelected(true);
+      }
+      txtDireccion.setText(postulante.getDireccion());
+      
+
     } catch (Exception e) {
       System.out.println("Error: " + e.getMessage());
     }
