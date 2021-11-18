@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -30,6 +31,7 @@ public class Tarea03View extends javax.swing.JFrame {
   public Tarea03View() {
     initComponents();
     llenarDepartamento();
+    listar();
   }
 
   @SuppressWarnings("unchecked")
@@ -83,6 +85,11 @@ public class Tarea03View extends javax.swing.JFrame {
     jPanel8.add(txtApellidoMaterno);
 
     txtNumeroDni.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "N° DNI", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12), new java.awt.Color(51, 51, 255))); // NOI18N
+    txtNumeroDni.addKeyListener(new java.awt.event.KeyAdapter() {
+      public void keyTyped(java.awt.event.KeyEvent evt) {
+        txtNumeroDniKeyTyped(evt);
+      }
+    });
     jPanel8.add(txtNumeroDni);
 
     txtFechaNacimiento.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Fecha Nacimiento(DD/MM/YYYY)", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12), new java.awt.Color(51, 51, 255))); // NOI18N
@@ -138,6 +145,7 @@ public class Tarea03View extends javax.swing.JFrame {
     jPanel10.add(txtDireccion);
 
     cbxDepartamento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Departamento" }));
+    cbxDepartamento.setBorder(javax.swing.BorderFactory.createTitledBorder("Departamento"));
     cbxDepartamento.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         cbxDepartamentoActionPerformed(evt);
@@ -146,6 +154,7 @@ public class Tarea03View extends javax.swing.JFrame {
     jPanel10.add(cbxDepartamento);
 
     cbxProvincia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Provincia" }));
+    cbxProvincia.setBorder(javax.swing.BorderFactory.createTitledBorder("Provincia"));
     cbxProvincia.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         cbxProvinciaActionPerformed(evt);
@@ -154,6 +163,7 @@ public class Tarea03View extends javax.swing.JFrame {
     jPanel10.add(cbxProvincia);
 
     cbxDistrito.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Distrito" }));
+    cbxDistrito.setBorder(javax.swing.BorderFactory.createTitledBorder("Distrito"));
     cbxDistrito.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         cbxDistritoActionPerformed(evt);
@@ -230,7 +240,9 @@ public class Tarea03View extends javax.swing.JFrame {
 
   private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
     try {
-      agregar();
+      if (validar()) {
+        agregar();
+      }
     } catch (ParseException ex) {
       Logger.getLogger(Tarea03View.class.getName()).log(Level.SEVERE, null, ex);
     }
@@ -268,6 +280,10 @@ public class Tarea03View extends javax.swing.JFrame {
   private void cbxDistritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxDistritoActionPerformed
     setUbigeo();
   }//GEN-LAST:event_cbxDistritoActionPerformed
+
+  private void txtNumeroDniKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumeroDniKeyTyped
+    MetodoGenericos.numerosInt(evt, txtNumeroDni, 8);
+  }//GEN-LAST:event_txtNumeroDniKeyTyped
 
   /**
    * @param args the command line arguments
@@ -353,6 +369,7 @@ public class Tarea03View extends javax.swing.JFrame {
     postulante.setDireccion(txtDireccion.getText());
     postulante.setUbigeoId(ubigeo.getUbigeoId());
     postulanteService.registrar(postulante);
+    listar();
   }
 
   private void modificar() throws ParseException {
@@ -371,10 +388,12 @@ public class Tarea03View extends javax.swing.JFrame {
     postulante.setDireccion(txtDireccion.getText());
     postulante.setUbigeoId(ubigeo.getUbigeoId());
     postulanteService.modificar(postulante);
+    listar();
   }
 
   private void eliminar() {
-
+    postulanteService.eliminar(postulante);
+    listar();
   }
 
   private void listar() {
@@ -473,6 +492,59 @@ public class Tarea03View extends javax.swing.JFrame {
         ubigeo = d;
       }
     });
+  }
+
+  private boolean validar() {
+    if (txtNombre.getText().length() == 0) {
+      JOptionPane.showMessageDialog(null, "Debe llenar el campo Nombres", "Postulante Alert", JOptionPane.WARNING_MESSAGE);
+      txtNombre.requestFocus();
+      return false;
+    }
+    if (txtNombre.getText().length() > 60 || txtNombre.getText().length() < 3) {
+      JOptionPane.showMessageDialog(null, "El campo Nombres debe contener entre 3 a 60 caracteres", "Postulante Alert", JOptionPane.WARNING_MESSAGE);
+      txtNombre.requestFocus();
+      return false;
+    }
+    if (txtApellidoPaterno.getText().length() == 0) {
+      JOptionPane.showMessageDialog(null, "Debe llenar el campo Apellido Paterno", "Postulante Alert", JOptionPane.WARNING_MESSAGE);
+      txtApellidoPaterno.requestFocus();
+      return false;
+    }
+    if (txtApellidoPaterno.getText().length() > 60 || txtApellidoPaterno.getText().length() < 3) {
+      JOptionPane.showMessageDialog(null, "El campo Apellido Paterno debe contener entre 3 a 60 caracteres", "Postulante Alert", JOptionPane.WARNING_MESSAGE);
+      txtApellidoPaterno.requestFocus();
+      return false;
+    }
+    if (txtNumeroDni.getText().length() == 0) {
+      JOptionPane.showMessageDialog(null, "Debe llenar el campo Numero de DNI", "Postulante Alert", JOptionPane.WARNING_MESSAGE);
+      txtNumeroDni.requestFocus();
+      return false;
+    }
+    if (txtNumeroDni.getText().length() > 8 || txtNumeroDni.getText().length() < 8) {
+      JOptionPane.showMessageDialog(null, "El campo Numero DNI debe contener exactamente 8 digitos", "Postulante Alert", JOptionPane.WARNING_MESSAGE);
+      txtNumeroDni.requestFocus();
+      return false;
+    }
+    Postulante postulanteByDNI = postulanteService.getByNumeroDni(txtNumeroDni.getText());
+    if (postulanteByDNI != null) {
+      JOptionPane.showMessageDialog(null, "El Numero DNI ingresado ya existe: \n"
+        + "PostulanteId: " + postulanteByDNI.getPostulanteId() + "\n"
+        + "Nombres: " + postulanteByDNI.getNombres() + "\n"
+        + "Apellidos: " + postulanteByDNI.getApellidoPaterno() + " " + postulanteByDNI.getApellidoMaterno(), "Postulante Alert", JOptionPane.WARNING_MESSAGE);
+      txtNumeroDni.requestFocus();
+      return false;
+    }
+    if (txtCorreoElectronico.getText().length() == 0) {
+      JOptionPane.showMessageDialog(null, "Debe llenar el campo CorreoElectronico", "Postulante Alert", JOptionPane.WARNING_MESSAGE);
+      txtCorreoElectronico.requestFocus();
+      return false;
+    }
+    if (!MetodoGenericos.validarEmail(txtCorreoElectronico.getText())) {
+      JOptionPane.showMessageDialog(null, "El campo CorreoElectronico no cumple con el formato de un correo electronico", "Postulante Alert", JOptionPane.WARNING_MESSAGE);
+      txtCorreoElectronico.requestFocus();
+      return false;
+    }
+    return true;
   }
 
 }

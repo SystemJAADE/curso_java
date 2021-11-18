@@ -52,22 +52,23 @@ public class PostulanteService {
 
   public void modificar(Postulante postulante) {
     Connection cn = null;
+    System.out.println(postulante.toString());
     try {
       cn = Conexion.getConnection();
       cn.setAutoCommit(true);
-      String sql = "UPDATE tarea03.postulante"
-        + "SET nombres=?, "
-        + "apellido_paterno=?, "
-        + "apellido_materno=?, "
-        + "numero_dni=?, "
-        + "fecha_nacimiento=?, "
-        + "telefono_fijo=?, "
-        + "telefono_celular=?, "
-        + "correo_electronico=?, "
-        + "sexo=?, "
-        + "direccion=?, "
-        + "ubigeo_id=?"
-        + "WHERE postulante_id=?;";
+      String sql = "UPDATE postulante "
+        + "SET nombres = ?, "
+        + "apellido_paterno = ?, "
+        + "apellido_materno = ?, "
+        + "numero_dni = ?, "
+        + "fecha_nacimiento = ?, "
+        + "telefono_fijo = ?, "
+        + "telefono_celular = ?, "
+        + "correo_electronico = ?, "
+        + "sexo = ?, "
+        + "direccion = ?, "
+        + "ubigeo_id = ? "
+        + "WHERE postulante_id = ?;";
       PreparedStatement pstm = cn.prepareStatement(sql);
       pstm.setString(1, postulante.getNombres());
       pstm.setString(2, postulante.getApellidoPaterno());
@@ -196,6 +197,45 @@ public class PostulanteService {
     }
   }
 
+  public Postulante getByNumeroDni(String numeroDni) {
+    Postulante postulante = null;
+    Connection cn = null;
+    try {
+      cn = Conexion.getConnection();
+      String sql = "SELECT "
+        + "postulante_id, "
+        + "nombres, "
+        + "apellido_paterno, "
+        + "apellido_materno, "
+        + "numero_dni, "
+        + "fecha_nacimiento, "
+        + "telefono_fijo, "
+        + "telefono_celular, "
+        + "correo_electronico, "
+        + "sexo, "
+        + "direccion, "
+        + "ubigeo_id "
+        + "FROM postulante "
+        + "WHERE numero_dni = ? ";
+      PreparedStatement pstm = cn.prepareStatement(sql);
+      pstm.setString(1, numeroDni);
+      ResultSet rs = pstm.executeQuery();
+      if (rs.next()) {
+        postulante = mapRow(rs);
+      }
+      return postulante;
+    } catch (SQLException e) {
+      throw new RuntimeException(e.getMessage());
+    } catch (Exception e) {
+      throw new RuntimeException("No se tiene acceso a la BD.");
+    } finally {
+      try {
+        cn.close();
+      } catch (Exception e) {
+      }
+    }
+  }
+
   public Postulante mapRow(ResultSet rs) throws SQLException {
     Postulante bean = new Postulante();
     bean.setPostulanteId(rs.getInt("postulante_id"));
@@ -212,4 +252,5 @@ public class PostulanteService {
     bean.setUbigeoId(rs.getString("ubigeo_id"));
     return bean;
   }
+
 }
