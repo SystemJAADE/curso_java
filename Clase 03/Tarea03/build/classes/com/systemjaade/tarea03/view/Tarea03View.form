@@ -142,6 +142,9 @@
                   </Border>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtTelefonoCelularKeyTyped"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="txtCorreoElectronico">
               <Properties>

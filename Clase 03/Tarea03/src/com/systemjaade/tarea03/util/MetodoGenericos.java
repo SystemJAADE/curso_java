@@ -55,4 +55,10 @@ public class MetodoGenericos {
     Matcher mather = pattern.matcher(email);
     return mather.find();
   }
+  public static Boolean validarTelefono(String phone) {
+    // Patrón para validar el email
+    Pattern pattern = Pattern.compile("\\d{2}-\\d{7}");
+    Matcher mather = pattern.matcher(phone);
+    return mather.find();
+  }
 }

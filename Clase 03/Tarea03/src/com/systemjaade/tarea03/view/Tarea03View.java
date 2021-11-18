@@ -103,6 +103,11 @@ public class Tarea03View extends javax.swing.JFrame {
     jPanel9.add(txtTelefonoFijo);
 
     txtTelefonoCelular.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Teléfono Celular", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12), new java.awt.Color(51, 51, 255))); // NOI18N
+    txtTelefonoCelular.addKeyListener(new java.awt.event.KeyAdapter() {
+      public void keyTyped(java.awt.event.KeyEvent evt) {
+        txtTelefonoCelularKeyTyped(evt);
+      }
+    });
     jPanel9.add(txtTelefonoCelular);
 
     txtCorreoElectronico.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Correo electrónico", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12), new java.awt.Color(51, 51, 255))); // NOI18N
@@ -284,6 +289,10 @@ public class Tarea03View extends javax.swing.JFrame {
   private void txtNumeroDniKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumeroDniKeyTyped
     MetodoGenericos.numerosInt(evt, txtNumeroDni, 8);
   }//GEN-LAST:event_txtNumeroDniKeyTyped
+
+  private void txtTelefonoCelularKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTelefonoCelularKeyTyped
+    MetodoGenericos.numerosInt(evt, txtTelefonoCelular, 9);
+  }//GEN-LAST:event_txtTelefonoCelularKeyTyped
 
   /**
    * @param args the command line arguments
@@ -544,6 +553,21 @@ public class Tarea03View extends javax.swing.JFrame {
       txtCorreoElectronico.requestFocus();
       return false;
     }
+    if (txtTelefonoFijo.getText().isEmpty() && txtTelefonoCelular.getText().isEmpty()) {
+      JOptionPane.showMessageDialog(null, "Debe registrar al menos un telefono", "Postulante Alert", JOptionPane.WARNING_MESSAGE);
+      txtTelefonoFijo.requestFocus();
+      return false;
+    }
+
+    if (txtTelefonoCelular.getText().length() > 9 || txtTelefonoCelular.getText().length() < 9) {
+      JOptionPane.showMessageDialog(null, "Celular debe ser de 9 digitos ", "Postulante Alert", JOptionPane.WARNING_MESSAGE);
+      txtTelefonoCelular.requestFocus();
+      return false;
+    }
+    if (!MetodoGenericos.validarTelefono(txtTelefonoFijo.getText())) {
+      JOptionPane.showMessageDialog(null, "Telefono Fijo no cumple con el formato requerico (XX-XXXXXXX)", "Postulante Alert", JOptionPane.WARNING_MESSAGE);
+      txtTelefonoFijo.requestFocus();
+      return false;    }
     return true;
   }
 
