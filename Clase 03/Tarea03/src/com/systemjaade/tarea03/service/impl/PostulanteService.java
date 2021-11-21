@@ -1,7 +1,8 @@
-package com.systemjaade.tarea03.service;
+package com.systemjaade.tarea03.service.impl;
 
 import com.systemjaade.tarea03.conexion.Conexion;
 import com.systemjaade.tarea03.model.Postulante;
+import com.systemjaade.tarea03.service.IPostulanteService;
 import com.systemjaade.tarea03.util.MetodoGenericos;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,8 +15,9 @@ import java.util.List;
  * @author Tarazona Marrujo Elí Gamaliel - "System JAADE S.A.C."
  * @version 30/12/2019 02:16 AM UTC -5
  */
-public class PostulanteService {
+public class PostulanteService implements IPostulanteService {
 
+  @Override
   public void registrar(Postulante postulante) {
     Connection cn = null;
     try {
@@ -33,7 +35,7 @@ public class PostulanteService {
       pstm.setString(6, postulante.getTelefonoFijo());
       pstm.setString(7, postulante.getTelefonoCelular());
       pstm.setString(8, postulante.getCorreoElectronico());
-      pstm.setBoolean(9, postulante.isSexo());
+      pstm.setBoolean(9, postulante.getSexo());
       pstm.setString(10, postulante.getDireccion());
       pstm.setString(11, postulante.getUbigeoId());
       pstm.executeUpdate();
@@ -50,6 +52,7 @@ public class PostulanteService {
     }
   }
 
+  @Override
   public void modificar(Postulante postulante) {
     Connection cn = null;
     System.out.println(postulante.toString());
@@ -78,7 +81,7 @@ public class PostulanteService {
       pstm.setString(6, postulante.getTelefonoFijo());
       pstm.setString(7, postulante.getTelefonoCelular());
       pstm.setString(8, postulante.getCorreoElectronico());
-      pstm.setBoolean(9, postulante.isSexo());
+      pstm.setBoolean(9, postulante.getSexo());
       pstm.setString(10, postulante.getDireccion());
       pstm.setString(11, postulante.getUbigeoId());
       pstm.setInt(12, postulante.getPostulanteId());
@@ -96,6 +99,7 @@ public class PostulanteService {
     }
   }
 
+  @Override
   public void eliminar(Postulante postulante) {
     Connection cn = null;
     try {
@@ -118,6 +122,7 @@ public class PostulanteService {
     }
   }
 
+  @Override
   public Postulante getPostulante(int postulanteId) {
     Postulante bean = new Postulante();
     Connection cn = null;
@@ -159,6 +164,7 @@ public class PostulanteService {
     return bean;
   }
 
+  @Override
   public List<Postulante> getLista() {
     List<Postulante> lista = new ArrayList<>();
     Connection cn = null;
@@ -197,6 +203,7 @@ public class PostulanteService {
     }
   }
 
+  @Override
   public Postulante getByNumeroDni(String numeroDni) {
     Postulante postulante = null;
     Connection cn = null;
@@ -237,20 +244,20 @@ public class PostulanteService {
   }
 
   public Postulante mapRow(ResultSet rs) throws SQLException {
-    Postulante bean = new Postulante();
-    bean.setPostulanteId(rs.getInt("postulante_id"));
-    bean.setNombres(rs.getString("nombres"));
-    bean.setApellidoPaterno(rs.getString("apellido_paterno"));
-    bean.setApellidoMaterno(rs.getString("apellido_materno"));
-    bean.setNumeroDni(rs.getString("numero_dni"));
-    bean.setFechaNacimiento(rs.getDate("fecha_nacimiento"));
-    bean.setTelefonoFijo(rs.getString("telefono_fijo"));
-    bean.setTelefonoCelular(rs.getString("telefono_celular"));
-    bean.setCorreoElectronico(rs.getString("correo_electronico"));
-    bean.setSexo(rs.getBoolean("sexo"));
-    bean.setDireccion(rs.getString("direccion"));
-    bean.setUbigeoId(rs.getString("ubigeo_id"));
-    return bean;
+    return Postulante.builder()
+      .postulanteId(rs.getInt("postulante_id"))
+      .nombres(rs.getString("nombres"))
+      .apellidoPaterno(rs.getString("apellido_paterno"))
+      .apellidoMaterno(rs.getString("apellido_materno"))
+      .numeroDni(rs.getString("numero_dni"))
+      .fechaNacimiento(rs.getDate("fecha_nacimiento"))
+      .telefonoFijo(rs.getString("telefono_fijo"))
+      .telefonoCelular(rs.getString("telefono_celular"))
+      .correoElectronico(rs.getString("correo_electronico"))
+      .sexo(rs.getBoolean("sexo"))
+      .direccion(rs.getString("direccion"))
+      .ubigeoId(rs.getString("ubigeo_id"))
+      .build();
   }
 
 }

@@ -2,8 +2,10 @@ package com.systemjaade.tarea03.view;
 
 import com.systemjaade.tarea03.model.Postulante;
 import com.systemjaade.tarea03.model.Ubigeo;
-import com.systemjaade.tarea03.service.PostulanteService;
-import com.systemjaade.tarea03.service.UbigeoService;
+import com.systemjaade.tarea03.service.IPostulanteService;
+import com.systemjaade.tarea03.service.IUbigeoService;
+import com.systemjaade.tarea03.service.impl.PostulanteService;
+import com.systemjaade.tarea03.service.impl.UbigeoService;
 import com.systemjaade.tarea03.util.MetodoGenericos;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -19,8 +21,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Tarea03View extends javax.swing.JFrame {
 
-  private PostulanteService postulanteService = new PostulanteService();
-  private UbigeoService ubigeoService = new UbigeoService();
+  IPostulanteService postulanteService = new PostulanteService();
+  IUbigeoService ubigeoService = new UbigeoService();
   private Ubigeo ubigeo = new Ubigeo();
   Postulante postulante = new Postulante();
   List<Ubigeo> departamentos = new ArrayList<>();
@@ -432,7 +434,7 @@ public class Tarea03View extends javax.swing.JFrame {
       object[6] = bean.getTelefonoFijo();
       object[7] = bean.getTelefonoCelular();
       object[8] = bean.getCorreoElectronico();
-      object[9] = bean.isSexo();
+      object[9] = bean.getSexo();
       object[10] = bean.getDireccion();
       object[11] = bean.getUbigeoId();
       tabla.addRow(object);
@@ -453,7 +455,7 @@ public class Tarea03View extends javax.swing.JFrame {
       txtTelefonoFijo.setText(postulante.getTelefonoFijo());
       txtTelefonoCelular.setText(postulante.getTelefonoCelular());
       txtCorreoElectronico.setText(postulante.getCorreoElectronico());
-      if (postulante.isSexo() == true) {
+      if (postulante.getSexo() == true) {
         rbtMasculino.setSelected(true);
       } else {
         rbtFemenino.setSelected(true);
@@ -567,7 +569,8 @@ public class Tarea03View extends javax.swing.JFrame {
     if (!MetodoGenericos.validarTelefono(txtTelefonoFijo.getText())) {
       JOptionPane.showMessageDialog(null, "Telefono Fijo no cumple con el formato requerico (XX-XXXXXXX)", "Postulante Alert", JOptionPane.WARNING_MESSAGE);
       txtTelefonoFijo.requestFocus();
-      return false;    }
+      return false;
+    }
     return true;
   }
 

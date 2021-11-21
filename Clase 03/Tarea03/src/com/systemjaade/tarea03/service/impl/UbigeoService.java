@@ -1,7 +1,8 @@
-package com.systemjaade.tarea03.service;
+package com.systemjaade.tarea03.service.impl;
 
 import com.systemjaade.tarea03.conexion.Conexion;
 import com.systemjaade.tarea03.model.Ubigeo;
+import com.systemjaade.tarea03.service.IUbigeoService;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,8 +14,9 @@ import java.util.List;
  * @author Tarazona Marrujo Elí Gamaliel - "System JAADE S.A.C."
  * @version 30/12/2019 02:16 AM UTC -5
  */
-public class UbigeoService {
+public class UbigeoService implements IUbigeoService {
 
+  @Override
   public List<Ubigeo> getDepartamento() {
     List<Ubigeo> lista = new ArrayList<>();
     Connection cn = null;
@@ -42,6 +44,7 @@ public class UbigeoService {
     return lista;
   }
 
+  @Override
   public List<Ubigeo> getProvincia(String departamentoId) {
     List<Ubigeo> lista = new ArrayList<>();
     Connection cn = null;
@@ -72,6 +75,7 @@ public class UbigeoService {
     return lista;
   }
 
+  @Override
   public List<Ubigeo> getDistrito(String departamentoId, String provinciaId) {
     List<Ubigeo> lista = new ArrayList<>();
     Connection cn = null;
@@ -104,14 +108,14 @@ public class UbigeoService {
   }
 
   public Ubigeo mapRow(ResultSet rs) throws SQLException {
-    Ubigeo bean = new Ubigeo();
-    bean.setUbigeoId(rs.getString("ubigeo_id"));
-    bean.setDepartamentoId(rs.getString("departamento_id"));
-    bean.setDepartamento(rs.getString("departamento"));
-    bean.setProvinciaId(rs.getString("provincia_id"));
-    bean.setProvincia(rs.getString("provincia"));
-    bean.setDistritoId(rs.getString("distrito_id"));
-    bean.setDistrito(rs.getString("distrito"));
-    return bean;
+    return Ubigeo.builder()
+      .ubigeoId(rs.getString("ubigeo_id"))
+      .departamentoId(rs.getString("departamentoId"))
+      .departamento(rs.getString("departamento"))
+      .provinciaId(rs.getString("provincia_id"))
+      .provincia(rs.getString("provincia"))
+      .distritoId(rs.getString("distrito_id"))
+      .distrito(rs.getString("distrito"))
+      .build();
   }
 }
